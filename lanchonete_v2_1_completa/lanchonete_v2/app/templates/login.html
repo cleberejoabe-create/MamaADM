@@ -1,0 +1,10 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login</title><link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}"></head>
+<body class="login-page"><form class="login-card" method="post">
+<h1>🍔 Lanchonete</h1><p>Entre no sistema de gestão</p>
+<label>Usuário<input name="username" value="admin" required></label>
+<label>Senha<input name="password" type="password" value="admin123" required></label>
+<button class="btn primary">Entrar</button>
+{% with messages = get_flashed_messages() %}{% for m in messages %}<div class="flash">{{m}}</div>{% endfor %}{% endwith %}
+<small>Primeiro acesso: admin / admin123</small>
+</form></body></html>

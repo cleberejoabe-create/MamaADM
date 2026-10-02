@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block content %}
+<h1>Compras</h1>
+<form class="panel" method="post" action="{{url_for('purchases.new')}}">
+<select name="supplier_id"><option value="">Sem fornecedor</option>{% for s in suppliers %}<option value="{{s.id}}">{{s.name}}</option>{% endfor %}</select>
+<div id="purchase-items"><div class="purchase-row">
+<select name="product_id">{% for p in products %}<option value="{{p.id}}">{{p.name}}</option>{% endfor %}</select>
+<input name="quantity" type="number" step="0.01" min="0.01" placeholder="Qtd" required>
+<input name="unit_cost" type="number" step="0.01" min="0" placeholder="Custo unit." required>
+<button type="button" class="btn danger-btn" onclick="this.parentElement.remove()">×</button>
+</div></div>
+<button type="button" class="btn" onclick="addPurchaseRow()">+ Item</button>
+<button class="btn primary">Registrar compra</button>
+</form>
+<div class="panel"><h2>Histórico</h2><table><tr><th>#</th><th>Fornecedor</th><th>Data</th><th>Total</th></tr>
+{% for p in purchases %}<tr><td>{{p.id}}</td><td>{{p.supplier.name if p.supplier else "-"}}</td><td>{{p.created_at.strftime("%d/%m/%Y %H:%M")}}</td><td>R$ {{ "%.2f"|format(p.total) }}</td></tr>{% endfor %}</table></div>
+<script>
+function addPurchaseRow(){
+ const first=document.querySelector(".purchase-row"); const clone=first.cloneNode(true);
+ clone.querySelectorAll("input").forEach(x=>x.value=""); document.querySelector("#purchase-items").appendChild(clone);
+}
+</script>
+{% endblock %}

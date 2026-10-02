@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>Ficha técnica: {{product.name}}</h1><p>Custo calculado: <b>R$ {{ "%.2f"|format(cost) }}</b></p></div></div>
+<form class="panel inline-form" method="post">
+<select name="ingredient_id" required>{% for i in ingredients %}<option value="{{i.id}}">{{i.name}} · R$ {{ "%.2f"|format(i.cost) }}/{{i.unit}}</option>{% endfor %}</select>
+<input name="quantity" type="number" step="0.01" min="0.01" placeholder="Quantidade" required>
+<button class="btn primary">Adicionar ingrediente</button>
+</form>
+<div class="panel"><table><tr><th>Ingrediente</th><th>Quantidade</th><th>Custo</th><th></th></tr>
+{% for r in recipes %}<tr><td>{{r.ingredient.name}}</td><td>{{r.quantity}} {{r.ingredient.unit}}</td><td>R$ {{ "%.2f"|format(r.quantity*r.ingredient.cost) }}</td><td><a href="{{url_for('products.remove_recipe',id=r.id)}}">Remover</a></td></tr>{% endfor %}
+</table></div>
+<p class="hint">Quando uma venda deste produto for registrada, estes ingredientes serão baixados automaticamente do estoque.</p>
+{% endblock %}

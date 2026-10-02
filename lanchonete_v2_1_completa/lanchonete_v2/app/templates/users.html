@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Usuários</h1><p>Gerencie os acessos ao sistema da lanchonete.</p></div>
+  <a class="btn primary" href="{{ url_for('users.create') }}">+ Novo usuário</a>
+</div>
+<div class="panel">
+  <table>
+    <thead><tr><th>Usuário</th><th>Perfil</th><th>Ações</th></tr></thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td><strong>{{ user.username }}</strong>{% if user.id == current_user.id %} <span class="badge">você</span>{% endif %}</td>
+        <td>{{ "Administrador" if user.role == "admin" else "Funcionário" }}</td>
+        <td class="actions">
+          <a href="{{ url_for('users.edit', user_id=user.id) }}">Editar</a>
+          {% if user.id != current_user.id %}
+          <form method="post" action="{{ url_for('users.delete', user_id=user.id) }}" style="display:inline" onsubmit="return confirm('Excluir este usuário? Esta ação não pode ser desfeita.');">
+            <button class="btn danger-btn" type="submit">Excluir</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="3">Nenhum usuário cadastrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="panel hint">
+  <strong>Segurança:</strong> senhas são armazenadas com hash. O administrador não consegue visualizar a senha de outro usuário, apenas definir uma nova.
+</div>
+{% endblock %}

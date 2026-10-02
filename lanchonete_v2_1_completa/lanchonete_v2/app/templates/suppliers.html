@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block content %}
+<h1>Fornecedores</h1>
+<form class="panel form-grid" method="post" action="{{url_for('suppliers.new')}}">
+<label>Nome<input name="name" required></label><label>Telefone<input name="phone"></label><label>CNPJ/CPF<input name="document"></label><label>Observações<input name="notes"></label>
+<div><button class="btn primary">Cadastrar fornecedor</button></div>
+</form>
+<div class="panel"><table><tr><th>Nome</th><th>Telefone</th><th>Documento</th><th>Ação</th></tr>
+{% for s in suppliers %}<tr><td>{{s.name}}</td><td>{{s.phone or "-"}}</td><td>{{s.document or "-"}}</td><td><a href="{{url_for('suppliers.delete',id=s.id)}}" onclick="return confirm('Excluir fornecedor?')">Excluir</a></td></tr>{% endfor %}</table></div>
+{% endblock %}

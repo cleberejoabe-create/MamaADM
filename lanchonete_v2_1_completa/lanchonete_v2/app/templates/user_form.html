@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <div><h1>{{ "Editar usuário" if user else "Novo usuário" }}</h1><p>{{ "Atualize os dados e, se quiser, defina uma nova senha." if user else "Crie um novo acesso ao sistema." }}</p></div>
+  <a class="btn" href="{{ url_for('users.index') }}">Voltar</a>
+</div>
+<div class="panel">
+<form method="post">
+  <div class="form-grid">
+    <div><label>Usuário<input name="username" required minlength="3" value="{{ user.username if user else '' }}" autocomplete="username"></label></div>
+    <div><label>Perfil<select name="role"><option value="funcionario" {% if user and user.role == 'funcionario' %}selected{% endif %}>Funcionário</option><option value="admin" {% if user and user.role == 'admin' %}selected{% endif %}>Administrador</option></select></label></div>
+    <div><label>{{ "Nova senha (opcional)" if user else "Senha" }}<input type="password" name="password" {% if not user %}required{% endif %} minlength="6" autocomplete="new-password"></label></div>
+    <div><label>{{ "Confirmar nova senha" if user else "Confirmar senha" }}<input type="password" name="confirm_password" {% if not user %}required{% endif %} minlength="6" autocomplete="new-password"></label></div>
+  </div>
+  <p class="hint">A senha deve ter pelo menos 6 caracteres.</p>
+  <button class="btn primary" type="submit">Salvar</button>
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>Dashboard</h1><p>Visão geral da operação</p></div><a class="btn primary" href="{{ url_for('sales.index') }}">+ Registrar venda</a></div>
+<div class="cards">
+<div class="metric"><span>Vendas hoje</span><strong>R$ {{ "%.2f"|format(revenue) }}</strong><small>{{ sales_count }} venda(s)</small></div>
+<div class="metric"><span>Valor do estoque</span><strong>R$ {{ "%.2f"|format(stock_value) }}</strong><small>{{ products|length }} produtos</small></div>
+<div class="metric"><span>Estoque baixo</span><strong>{{ low|length }}</strong><small>item(ns) para repor</small></div>
+<div class="metric"><span>Produtos ativos</span><strong>{{ products|length }}</strong><small>cadastro atual</small></div>
+</div>
+<div class="two-col">
+<section class="panel"><h2>⚠️ Atenção</h2>
+{% if low %}<table><tr><th>Produto</th><th>Estoque</th><th>Mínimo</th></tr>
+{% for p in low %}<tr><td>{{p.name}}</td><td class="danger">{{p.stock}} {{p.unit}}</td><td>{{p.min_stock}}</td></tr>{% endfor %}
+</table>{% else %}<p class="success">Tudo certo. Nenhum produto abaixo do mínimo.</p>{% endif %}
+</section>
+<section class="panel"><h2>Últimas vendas</h2>
+<table><tr><th>#</th><th>Data</th><th>Total</th></tr>
+{% for s in recent %}<tr><td>{{s.id}}</td><td>{{s.created_at.strftime("%d/%m %H:%M")}}</td><td>R$ {{ "%.2f"|format(s.total) }}</td></tr>{% endfor %}
+</table></section>
+</div>
+{% endblock %}

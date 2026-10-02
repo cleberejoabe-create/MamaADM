@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ title or "Lanchonete V2" }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body>
+<header class="top">
+  <div class="brand">🍔 <span>Lanchonete <b>V2</b></span></div>
+  <div class="user">
+    <span>{{ current_user.username }} · {{ "Administrador" if current_user.role == "admin" else "Funcionário" }}</span>
+    <a href="{{ url_for('users.profile') }}">Meu perfil</a> ·
+    <a href="{{ url_for('users.change_password') }}">Alterar senha</a> ·
+    <a href="{{ url_for('auth.logout') }}">Sair</a>
+  </div>
+</header>
+<aside class="sidebar">
+  <a href="{{ url_for('main.index') }}">📊 Dashboard</a>
+  <a href="{{ url_for('sales.index') }}">🧾 Vendas</a>
+  <a href="{{ url_for('products.index') }}">🍔 Produtos</a>
+  <a href="{{ url_for('stock.index') }}">📦 Estoque</a>
+  <a href="{{ url_for('purchases.index') }}">🛒 Compras</a>
+  <a href="{{ url_for('suppliers.index') }}">🚚 Fornecedores</a>
+  <a href="{{ url_for('cash.index') }}">💰 Caixa</a>
+  <a href="{{ url_for('reports.index') }}">📈 Relatórios</a>
+  {% if current_user.role == "admin" %}<a href="{{ url_for('users.index') }}">👥 Usuários</a>{% endif %}
+</aside>
+<main class="content">
+{% with messages = get_flashed_messages() %}
+{% for message in messages %}<div class="flash">{{ message }}</div>{% endfor %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

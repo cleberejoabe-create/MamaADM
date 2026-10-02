@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<div class="page-head"><div><h1>Produtos</h1><p>Produtos vendidos e ingredientes</p></div><a class="btn primary" href="{{url_for('products.new')}}">+ Novo produto</a></div>
+<div class="panel"><table><tr><th>Produto</th><th>Categoria</th><th>Estoque</th><th>Custo</th><th>Venda</th><th>Margem</th><th>Ações</th></tr>
+{% for p in products %}<tr>
+<td><b>{{p.name}}</b></td><td>{{p.category}}</td><td class="{{'danger' if p.stock <= p.min_stock else ''}}">{{p.stock}} {{p.unit}}</td>
+<td>R$ {{ "%.2f"|format(p.cost) }}</td><td>R$ {{ "%.2f"|format(p.price) }}</td>
+<td>{{ "%.1f"|format(((p.price-p.cost)/p.price*100) if p.price else 0) }}%</td>
+<td class="actions"><a href="{{url_for('products.recipe',id=p.id)}}">Ficha</a><a href="{{url_for('products.edit',id=p.id)}}">Editar</a><a href="{{url_for('products.delete',id=p.id)}}" onclick="return confirm('Arquivar produto?')">Arquivar</a></td>
+</tr>{% endfor %}</table></div>
+{% endblock %}

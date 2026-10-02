@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Meu perfil</h1><p>Altere seu nome de usuário e gerencie sua senha.</p></div>
+  <a class="btn primary" href="{{ url_for('users.change_password') }}">🔐 Alterar senha</a>
+</div>
+<div class="panel">
+<form method="post">
+  <div class="form-grid">
+    <div><label>Nome de usuário<input name="username" required minlength="3" value="{{ current_user.username }}" autocomplete="username"></label></div>
+    <div><label>Perfil<input value="{{ 'Administrador' if current_user.role == 'admin' else 'Funcionário' }}" disabled></label></div>
+  </div>
+  <button class="btn primary" type="submit">Salvar usuário</button>
+</form>
+</div>
+<div class="panel">
+  <h2>Senha</h2>
+  <p>Por segurança, a senha atual nunca é exibida. Você pode trocá-la informando a senha atual.</p>
+  <a class="btn" href="{{ url_for('users.change_password') }}">Alterar minha senha</a>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block content %}
+<h1>{{ "Editar" if product else "Novo" }} produto</h1>
+<form class="panel form-grid" method="post">
+<label>Nome<input name="name" value="{{product.name if product else ''}}" required></label>
+<label>Categoria<input name="category" value="{{product.category if product else ''}}" placeholder="Lanches, Bebidas, Ingredientes..."></label>
+<label>Unidade<select name="unit">{% for u in ["un","kg","g","L","ml","cx","pct"] %}<option {% if product and product.unit==u %}selected{% endif %}>{{u}}</option>{% endfor %}</select></label>
+<label>Estoque inicial{% if product %}<input value="{{product.stock}}" disabled>{% else %}<input name="stock" type="number" step="0.01" value="0">{% endif %}</label>
+<label>Estoque mínimo<input name="min_stock" type="number" step="0.01" value="{{product.min_stock if product else 0}}"></label>
+<label>Custo<input name="cost" type="number" step="0.01" value="{{product.cost if product else 0}}"></label>
+<label>Preço de venda<input name="price" type="number" step="0.01" value="{{product.price if product else 0}}"></label>
+<label>Validade<input name="expiration" type="date" value="{{product.expiration if product and product.expiration else ''}}"></label>
+<div><button class="btn primary">Salvar</button> <a class="btn" href="{{url_for('products.index')}}">Cancelar</a></div>
+</form>{% endblock %}

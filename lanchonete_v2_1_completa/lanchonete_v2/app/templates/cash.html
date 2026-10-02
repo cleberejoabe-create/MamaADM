@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<h1>Caixa</h1>
+<div class="metric single"><span>Vendas de hoje</span><strong>R$ {{ "%.2f"|format(sales_total) }}</strong></div>
+<form class="panel form-grid" method="post" action="{{url_for('cash.new')}}">
+<label>Tipo<select name="type"><option value="entrada">Entrada</option><option value="saida">Saída</option></select></label>
+<label>Valor<input name="amount" type="number" step="0.01" min="0.01" required></label>
+<label>Descrição<input name="description" required placeholder="Ex.: compra de gás"></label>
+<div><button class="btn primary">Lançar</button></div>
+</form>
+<div class="panel"><table><tr><th>Data</th><th>Tipo</th><th>Descrição</th><th>Valor</th></tr>
+{% for e in entries %}<tr><td>{{e.created_at.strftime("%d/%m/%Y %H:%M")}}</td><td>{{e.type}}</td><td>{{e.description}}</td><td>R$ {{ "%.2f"|format(e.amount) }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

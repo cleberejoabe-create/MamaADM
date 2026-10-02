@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% block content %}
+<h1>Vendas</h1>
+<form class="panel" method="post" action="{{url_for('sales.new')}}" id="sale-form">
+<div id="sale-items">
+<div class="sale-row"><select name="product_id">{% for p in products %}<option value="{{p.id}}">{{p.name}} · R$ {{ "%.2f"|format(p.price) }}</option>{% endfor %}</select><input name="quantity" type="number" min="0.01" step="0.01" value="1"><button type="button" class="btn danger-btn" onclick="this.parentElement.remove()">×</button></div>
+</div>
+<button type="button" class="btn" onclick="addSaleRow()">+ Item</button>
+<select name="payment" style="margin-left:10px"><option>Dinheiro</option><option>PIX</option><option>Cartão</option><option>Vale</option></select>
+<button class="btn primary">Finalizar venda</button>
+</form>
+<div class="panel"><h2>Histórico</h2><table><tr><th>#</th><th>Data</th><th>Pagamento</th><th>Total</th></tr>
+{% for s in sales %}<tr><td>{{s.id}}</td><td>{{s.created_at.strftime("%d/%m/%Y %H:%M")}}</td><td>{{s.payment}}</td><td>R$ {{ "%.2f"|format(s.total) }}</td></tr>{% endfor %}</table></div>
+<script>
+const productOptions = `{{ products|map(attribute='name')|list|tojson }}`;
+function addSaleRow(){
+  const first=document.querySelector(".sale-row");
+  const clone=first.cloneNode(true);
+  clone.querySelector("input").value=1;
+  document.querySelector("#sale-items").appendChild(clone);
+}
+</script>
+{% endblock %}
